@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const pool = require("../db/pool");
 
 passport.use(
+  "user-login",
   new LocalStrategy(async (username, password, done) => {
     try {
       const result = await pool.query(
@@ -30,6 +31,44 @@ passport.use(
   })
 );
 
+passport.use(
+  "club-passcode",
+  new LocalStrategy(
+    {
+      usernameField: "full_name",
+      passwordField: "secret_password",
+      session: false,
+    },
+    async (username, password, done) => {
+      try {
+        const result = await pool.query(
+          "SELECT * FROM users WHERE full_name = $1",
+          [username]
+        );
+
+        // Check if user exists
+        if (result.rows.length === 0) {
+          return done(null, false, { message: "Incorrect username." });
+        }
+
+        const user = result.rows[0];
+
+        // Check if the provided password matches the secret passcode
+        const secretPass = process.env.SECRET_PASS;
+        if (password === secretPass) {
+          return done(null, user, { message: "Access granted" });
+        }
+
+        // If the password doesn't match
+        return done(null, false, { message: "Invalid password" });
+      } catch (err) {
+        console.error("Error in Passport strategy:", err);
+        return done(err); // Pass the error to Passport
+      }
+    }
+  )
+);
+
 //serilize user, put him in session
 
 passport.serializeUser((user, done) => {
@@ -52,5 +91,4 @@ passport.deserializeUser(async (id, done) => {
     done(err, null); // Handle errors
   }
 });
-
 module.exports = passport;

@@ -7,10 +7,15 @@ const findUserEmail = async function (email) {
   return result.rows;
 };
 
-const addUserToDb = async function (full_name, email, password) {
+const addUserToDb = async function (
+  full_name,
+  email,
+  password,
+  membership_status
+) {
   await pool.query(
-    "INSERT INTO users (full_name, email, password) VALUES ($1, $2, $3) ",
-    [full_name, email, password]
+    "INSERT INTO users (full_name, email, password, membership_status) VALUES ($1, $2, $3, $4) ",
+    [full_name, email, password, (membership_status = false)]
   );
 };
 
