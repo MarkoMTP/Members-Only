@@ -19,4 +19,21 @@ const registerValidator = [
   }),
 ];
 
-module.exports = registerValidator;
+const messageValidator = [
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("Title is required.")
+    .isLength({ max: 100 })
+    .withMessage("Title cannot exceed 100 characters.")
+    .escape(),
+  body("text")
+    .trim()
+    .notEmpty()
+    .withMessage("Text is required.")
+    .isLength({ max: 500 })
+    .withMessage("Text cannot exceed 500 characters.")
+    .escape(),
+];
+
+module.exports = { registerValidator, messageValidator };

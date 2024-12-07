@@ -1,11 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("../config/passport");
-const registerValidator = require("../validators/registerValidator");
+const {
+  registerValidator,
+  messageValidator,
+} = require("../validators/registerValidator");
 const { validationResult } = require("express-validator");
+
 const pool = require("../db/queries");
 const { registerController } = require("../controllers/registerFormController");
 const { secretFormController } = require("../controllers/secretFormController");
+const { newMsgController } = require("../controllers/newMsgController");
 
 router.get("/", (req, res) => {
   res.render("homepage", { user: req.user });
@@ -50,5 +55,11 @@ router.post("/logout", (req, res, next) => {
     res.redirect("/");
   });
 });
+
+router.get("/newMsg", (req, res) => {
+  res.render("newMsgForm");
+});
+
+router.post("/newMsg", messageValidator, newMsgController);
 
 module.exports = router;

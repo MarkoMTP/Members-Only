@@ -19,4 +19,10 @@ const addUserToDb = async function (
   );
 };
 
-module.exports = { findUserEmail, addUserToDb };
+const addNewMsgToDb = async function (title, text, userId) {
+  await pool.query(
+    "INSERT INTO messages (title, text, user_id) VALUES ($1, $2, $3) ",
+    [title, text, userId]
+  );
+};
+module.exports = { findUserEmail, addUserToDb, addNewMsgToDb };
