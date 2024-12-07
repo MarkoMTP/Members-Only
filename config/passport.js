@@ -5,30 +5,36 @@ const pool = require("../db/pool");
 
 passport.use(
   "user-login",
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const result = await pool.query(
-        "SELECT * FROM users WHERE username = $1",
-        [username]
-      );
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    async (username, password, done) => {
+      try {
+        const result = await pool.query(
+          "SELECT * FROM users WHERE email = $1",
+          [username]
+        );
 
-      if (result.rows.length === 0) {
-        return done(null, false, { message: "Incorrect username." }); // No user found
+        if (result.rows.length === 0) {
+          return done(null, false, { message: "Incorrect email." }); // No user found
+        }
+
+        const user = result.rows[0];
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          return done(null, false, { message: "Incorrect password." });
+        }
+
+        return done(null, user);
+      } catch (err) {
+        console.error(err);
+        return done(err);
       }
-
-      const user = result.rows[0];
-
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return done(null, false, { message: "Incorrect password." });
-      }
-
-      return done(null, user);
-    } catch (err) {
-      console.error(err);
-      return done(err);
     }
-  })
+  )
 );
 
 passport.use(

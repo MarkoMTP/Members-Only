@@ -8,7 +8,7 @@ const { registerController } = require("../controllers/registerFormController");
 const { secretFormController } = require("../controllers/secretFormController");
 
 router.get("/", (req, res) => {
-  res.render("homepage");
+  res.render("homepage", { user: req.user });
 });
 
 router.get("/register", (req, res) => {
@@ -26,5 +26,29 @@ router.post(
   passport.authenticate("club-passcode", { session: false }),
   secretFormController
 );
+
+router.get("/login", (req, res) => {
+  res.render("loginForm");
+});
+
+router.post(
+  "/login",
+  passport.authenticate("user-login", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  (req, res) => {
+    res.redirect("/");
+  }
+);
+
+router.post("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 module.exports = router;

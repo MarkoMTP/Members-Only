@@ -6,9 +6,20 @@
     <title>Home page</title>
   </head>
   <body>
+    <% if (user) { %>
+    <p>Hello, <%= user.full_name %>! You are logged in.</p>
+    <a href="/new-message">Create New Message</a>
+    <a href="/joinSecretClub">Try Joining The Secret Club</a>
+    <form action="/logout" method="POST">
+      <button type="submit">Logout</button>
+    </form>
+    <% } else { %>
     <h1>Welcome</h1>
     <a href="/register">Register</a>
-    <a href="">Login</a>
+    <br />
+    <a href="/login">Login</a>
+    <br />
     <a href="/joinSecretClub">Try Joining The Secret Club</a>
+    <% } %>
   </body>
 </html>
