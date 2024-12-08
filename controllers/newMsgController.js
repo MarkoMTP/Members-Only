@@ -18,7 +18,7 @@ const newMsgController = async (req, res) => {
       return res.status(400).json({ error: "Title and content are required." });
     }
 
-    await pool.addNewMsgToDb(title, content, user.id);
+    await pool.addNewmessagesToDb(title, content, user.id);
     res.redirect("/");
   } catch (error) {
     console.error("Error creating new message:", error);

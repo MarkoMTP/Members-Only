@@ -11,10 +11,9 @@ const pool = require("../db/queries");
 const { registerController } = require("../controllers/registerFormController");
 const { secretFormController } = require("../controllers/secretFormController");
 const { newMsgController } = require("../controllers/newMsgController");
+const { homepageController } = require("../controllers/homepageController");
 
-router.get("/", (req, res) => {
-  res.render("homepage", { user: req.user });
-});
+router.get("/", homepageController);
 
 router.get("/register", (req, res) => {
   res.render("registerForm");
@@ -40,7 +39,6 @@ router.post(
   "/login",
   passport.authenticate("user-login", {
     failureRedirect: "/login",
-    failureFlash: true,
   }),
   (req, res) => {
     res.redirect("/");

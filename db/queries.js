@@ -19,10 +19,24 @@ const addUserToDb = async function (
   );
 };
 
-const addNewMsgToDb = async function (title, text, userId) {
-  await pool.query(
+const addNewmessagesToDb = async function (title, text, userId) {
+  const result = await pool.query(
     "INSERT INTO messages (title, text, user_id) VALUES ($1, $2, $3) ",
     [title, text, userId]
   );
+
+  return result.rows;
 };
-module.exports = { findUserEmail, addUserToDb, addNewMsgToDb };
+
+const getAllmessages = async function () {
+  const results = await pool.query(
+    "SELECT messages.title, messages.text, messages.created_at, users.full_name  FROM messages    JOIN users ON messages.user_id = users.id; "
+  );
+  return results.rows;
+};
+module.exports = {
+  getAllmessages,
+  findUserEmail,
+  addUserToDb,
+  addNewmessagesToDb,
+};

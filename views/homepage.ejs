@@ -6,8 +6,49 @@
     <title>Home page</title>
   </head>
   <body>
-    <% if (user) { %>
-    <p>Hello, <%= user.full_name %>! You are logged in.</p>
+    <% if (user && user.membership_status === true) { %>
+    <p>
+      Hello, <%= user.full_name %>! You are logged in. And you are an member
+    </p>
+    <h2>Messages</h2>
+
+    <ul>
+      <% messages.forEach(message => { %>
+      <li>
+        <p><strong>Title:</strong> <%= message.title %></p>
+
+        <p><strong>Author:</strong> <%= message.full_name %></p>
+        <p>
+          <strong>Date:</strong> <%= new
+          Date(message.created_at).toLocaleString() %>
+        </p>
+        <p><strong>Message:</strong> <%= message.text %></p>
+      </li>
+      <% }); %>
+    </ul>
+
+    <a href="/newMsg">Create New Message</a>
+    <a href="/joinSecretClub">Try Joining The Secret Club</a>
+    <form action="/logout" method="POST">
+      <button type="submit">Logout</button>
+    </form>
+    <% } else if(user && user.membership_status === false) { %>
+    <p>
+      Hello, <%= user.full_name %>! You are logged in. And you are not an member
+    </p>
+
+    <h2>Messages</h2>
+
+    <ul>
+      <% messages.forEach(message => { %>
+      <li>
+        <p><strong>Title:</strong> <%= message.title %></p>
+
+        <p><strong>Message:</strong> <%= message.text %></p>
+      </li>
+      <% }); %>
+    </ul>
+
     <a href="/newMsg">Create New Message</a>
     <a href="/joinSecretClub">Try Joining The Secret Club</a>
     <form action="/logout" method="POST">

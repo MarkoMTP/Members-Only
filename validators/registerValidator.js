@@ -27,7 +27,7 @@ const messageValidator = [
     .isLength({ max: 100 })
     .withMessage("Title cannot exceed 100 characters.")
     .escape(),
-  body("text")
+  body("content")
     .trim()
     .notEmpty()
     .withMessage("Text is required.")
