@@ -13,6 +13,7 @@ const { secretFormController } = require("../controllers/secretFormController");
 const { newMsgController } = require("../controllers/newMsgController");
 const { homepageController } = require("../controllers/homepageController");
 const { adminLoginController } = require("../controllers/adminLoginController");
+const { deleteMsgController } = require("../controllers/deleteMsgController");
 
 router.get("/", homepageController);
 
@@ -73,4 +74,6 @@ router.post(
   }),
   adminLoginController
 );
+
+router.post("/deleteMessage/:id", deleteMsgController);
 module.exports = router;

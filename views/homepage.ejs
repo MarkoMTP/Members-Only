@@ -27,7 +27,7 @@
         <p><strong>Message:</strong> <%= message.text %></p>
         <% if (user.isadmin === true) { %>
         <form
-          action="/deleteMessage/<%= message.id %>"
+          action="/deleteMessage/<%=message.id%>"
           method="POST"
           style="display: inline"
         >

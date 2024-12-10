@@ -30,12 +30,17 @@ const addNewmessagesToDb = async function (title, text, userId) {
 
 const getAllmessages = async function () {
   const results = await pool.query(
-    "SELECT messages.title, messages.text, messages.created_at, users.full_name, users.isadmin  FROM messages    JOIN users ON messages.user_id = users.id; "
+    "SELECT messages.id, messages.title, messages.text, messages.created_at, users.full_name, users.isadmin  FROM messages    JOIN users ON messages.user_id = users.id; "
   );
   return results.rows;
 };
+
+const deleteMsg = async function (id) {
+  await pool.query("DELETE  FROM messages WHERE id = $1", [id]);
+};
 module.exports = {
   getAllmessages,
+  deleteMsg,
   findUserEmail,
   addUserToDb,
   addNewmessagesToDb,
