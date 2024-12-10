@@ -12,6 +12,7 @@ const { registerController } = require("../controllers/registerFormController");
 const { secretFormController } = require("../controllers/secretFormController");
 const { newMsgController } = require("../controllers/newMsgController");
 const { homepageController } = require("../controllers/homepageController");
+const { adminLoginController } = require("../controllers/adminLoginController");
 
 router.get("/", homepageController);
 
@@ -48,7 +49,8 @@ router.post(
 router.post("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
-      return next(err);
+      console.error("Logout error:", err);
+      return res.status(500).send("Error logging out.");
     }
     res.redirect("/");
   });
@@ -60,4 +62,15 @@ router.get("/newMsg", (req, res) => {
 
 router.post("/newMsg", messageValidator, newMsgController);
 
+router.get("/loginAdmin", (req, res) => {
+  res.render("adminLogin");
+});
+
+router.post(
+  "/loginAdmin",
+  passport.authenticate("admin-login", {
+    failureRedirect: "/loginAdmin",
+  }),
+  adminLoginController
+);
 module.exports = router;

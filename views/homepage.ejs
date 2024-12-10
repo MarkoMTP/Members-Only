@@ -8,21 +8,32 @@
   <body>
     <% if (user && user.membership_status === true) { %>
     <p>
-      Hello, <%= user.full_name %>! You are logged in. And you are an member
+      Hello, <%= user.full_name %>! You are logged in. And you are a member.
     </p>
+    <% if (user.isadmin) { %>
+    <p>You are also an admin!</p>
+    <% } %>
     <h2>Messages</h2>
 
     <ul>
       <% messages.forEach(message => { %>
       <li>
         <p><strong>Title:</strong> <%= message.title %></p>
-
         <p><strong>Author:</strong> <%= message.full_name %></p>
         <p>
           <strong>Date:</strong> <%= new
           Date(message.created_at).toLocaleString() %>
         </p>
         <p><strong>Message:</strong> <%= message.text %></p>
+        <% if (user.isadmin === true) { %>
+        <form
+          action="/deleteMessage/<%= message.id %>"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit">Delete</button>
+        </form>
+        <% } %>
       </li>
       <% }); %>
     </ul>
@@ -32,18 +43,17 @@
     <form action="/logout" method="POST">
       <button type="submit">Logout</button>
     </form>
-    <% } else if(user && user.membership_status === false) { %>
+    <a href="/loginAdmin">Admin Access</a>
+    <% } else if (user && user.membership_status === false) { %>
     <p>
-      Hello, <%= user.full_name %>! You are logged in. And you are not an member
+      Hello, <%= user.full_name %>! You are logged in. And you are not a member.
     </p>
-
     <h2>Messages</h2>
 
     <ul>
       <% messages.forEach(message => { %>
       <li>
         <p><strong>Title:</strong> <%= message.title %></p>
-
         <p><strong>Message:</strong> <%= message.text %></p>
       </li>
       <% }); %>

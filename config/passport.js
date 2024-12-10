@@ -75,6 +75,41 @@ passport.use(
   )
 );
 
+passport.use(
+  "admin-login",
+
+  new LocalStrategy(
+    {
+      usernameField: "full_name",
+      passwordField: "secret_password",
+      session: false,
+    },
+    async (username, password, done) => {
+      try {
+        const result = await pool.query(
+          "SELECT * FROM users WHERE full_name = $1",
+          [username]
+        );
+
+        // Check if user exists
+        if (result.rows.length === 0) {
+          return done(null, false, { message: "Incorrect username." });
+        }
+
+        const user = result.rows[0];
+        const secretPass = process.env.LOGIN_ADMIN;
+        if (password === secretPass) {
+          return done(null, user, { message: "Welcome Admin" });
+        }
+        return done(null, false, { message: "Invalid password" });
+      } catch (err) {
+        console.error("Error in Passport strategy:", err);
+        return done(err); // Pass the error to Passport
+      }
+    }
+  )
+);
+
 //serilize user, put him in session
 
 passport.serializeUser((user, done) => {

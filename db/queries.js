@@ -30,7 +30,7 @@ const addNewmessagesToDb = async function (title, text, userId) {
 
 const getAllmessages = async function () {
   const results = await pool.query(
-    "SELECT messages.title, messages.text, messages.created_at, users.full_name  FROM messages    JOIN users ON messages.user_id = users.id; "
+    "SELECT messages.title, messages.text, messages.created_at, users.full_name, users.isadmin  FROM messages    JOIN users ON messages.user_id = users.id; "
   );
   return results.rows;
 };
