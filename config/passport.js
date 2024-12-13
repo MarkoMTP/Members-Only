@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
-const pool = require("../db/pool");
+const pool = require("../db/supabase");
 
 passport.use(
   "user-login",

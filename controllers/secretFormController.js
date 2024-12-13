@@ -1,4 +1,4 @@
-const pool = require("../db/pool");
+const pool = require("../db/supabase");
 
 const secretFormController = async (req, res) => {
   const user = req.user;

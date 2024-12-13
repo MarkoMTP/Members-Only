@@ -22,7 +22,7 @@ const registerController = async (req, res) => {
     // Hash the password and add the user to the database
     const hashedPassword = await bcrypt.hash(password, 10);
     await addUserToDb(full_name, email, hashedPassword);
-    res.send("GOOD REG");
+    res.redirect("/");
   } catch (err) {
     console.error(err);
     res.status(500).send("Error registering user.");

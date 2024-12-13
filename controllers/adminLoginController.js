@@ -1,4 +1,4 @@
-const pool = require("../db/pool");
+const pool = require("../db/supabase");
 
 const adminLoginController = async (req, res) => {
   const user = req.user;
@@ -23,10 +23,6 @@ const adminLoginController = async (req, res) => {
       .status(500)
       .json({ error: "An error occurred while making the user an admin." });
   }
-};
-
-module.exports = {
-  adminLoginController,
 };
 
 module.exports = {
