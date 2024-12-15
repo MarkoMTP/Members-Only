@@ -2,7 +2,7 @@ require("dotenv").config(); // Load .env variables
 const { Pool } = require("pg");
 
 const supabasePool = new Pool({
-  connectionString: process.env.SUPABASE_CONNECTION_STRING,
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
 

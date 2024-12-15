@@ -3,7 +3,7 @@ const session = require("express-session");
 let passport = require("passport");
 let crypto = require("crypto");
 const routes = require("./routes");
-const pool = require("./db/pool");
+const pool = require("./db/supabase");
 let app = express();
 require("dotenv").config();
 const port = process.env.PORT || 4000;
