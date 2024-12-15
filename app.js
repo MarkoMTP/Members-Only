@@ -6,6 +6,7 @@ const routes = require("./routes");
 const pool = require("./db/pool");
 let app = express();
 require("dotenv").config();
+const port = process.env.PORT || 4000;
 
 app.set("view engine", "ejs");
 
@@ -35,4 +36,6 @@ app.use(passport.session());
 
 app.use(routes);
 
-app.listen(4005);
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
